@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class GeneratorStairs : MonoBehaviour
+{
+    [SerializeField] private Transform player;
+
+    public Space[] chunkPrefabs;
+    public Space firstChunk;
+
+    private List<Space> spawnedChunks = new List<Space>();
+
+
+    void Start()
+    {
+        spawnedChunks.Add(firstChunk);
+    }
+
+    void Update()
+    {
+        if (player.position.y > spawnedChunks[spawnedChunks.Count - 1].chunkDown.position.y)
+        {
+            SpawnChunk();
+        }
+
+        else if (player.position.y < spawnedChunks[spawnedChunks.Count - 1].chunkTop.position.y)
+        {
+            SpawnChunk(spawnedChunks[spawnedChunks.Count - 1].chunkDown.position - newChunk.directionTop.localPosition);
+        }
+
+        //else if (player.position.y < spawnPos1 - (startTiles * spawnDown))
+        //{
+        //SpawnTile1(Random.Range(0, tilePrefabs.Length));
+        //}
+    }
+
+    private void SpawnChunk(Vector3 direction)
+    {
+        Space newChunk = Instantiate(chunkPrefabs[Random.Range(0, chunkPrefabs.Length)]);
+        newChunk.transform.position = direction;
+        spawnedChunks.Add(newChunk);
+    }
+}
